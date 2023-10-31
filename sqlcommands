@@ -1,0 +1,37 @@
+create database votingsystem; 
+use votingsystem;
+
+create table party(name varchar(20) Primary Key, year int, president varchar(30));
+insert into party values("BJP", 1980, "JP Nadda");
+insert into party values("INC", 1950, "Mallikarjun Kharalter table candidate add constraint foreign key(constituency) references constituency(name);ge");
+insert into party values("BSP", 1984, "Mayavati");
+
+create table constituency(name varchar(15) Primary Key, state varchar(20), numOfVoters int);
+insert into constituency values("Chikkodi", "Karnataka",500001);
+insert into constituency values("Belgaum","Karnataka",500897);
+insert into constituency values("Bagalkot", "Karnataka",500456);
+insert into constituency values("North Goa","Goa",100123);
+insert into constituency values("Sitamarhi","Bihar",500005);
+
+
+create table candidate(candidateID int Primary Key, name varchar(30), gender char(1), DOB DATE, age int, constituency varchar(15), party varchar(20));
+alter table candidate add constraint foreign key(constituency) references constituency(name);
+alter table candidate add constraint foreign key(party) references party(name);
+
+insert into  candidate values(100256,"Ravi",'M','1970-12-12',53, "Chikkodi", "BJP");
+insert into candidate values(100257,"Richa",'F','1968-4-12',55, "Chikkodi", "INC");
+insert into  candidate values(100267,"Sita",'M','1989-11-12',42, "Sitamarhi", "BJP");
+insert into  candidate values(100288,"Ravi",'M','1990-12-8',41, "North Goa", "BSP");
+
+create table election(electionID int Primary Key, date DATE);
+insert into election values(45067,'2002-1-1');
+insert into election values(45068,'2004-2-1');
+insert into election values(45123,'2010-5-3');
+
+create table voter(voterID int Primary Key, walletAddress int unique, name varchar(30), fathername varchar(30), mothername varchar(30), gender char(1), address varchar(50), DOB DATE, age int, constituency varchar(15));
+alter table voter modify  constituency varchar(15) not null;
+alter table voter add constraint foreign key(constituency) references constituency(name);
+
+create table vote(voterID int, electionID int, Primary Key(voterID,electionID));
+alter table vote add constraint foreign key(voterID) references voter(voterID);
+alter table vote add constraint foreign key(electionID) references election(electionID);
